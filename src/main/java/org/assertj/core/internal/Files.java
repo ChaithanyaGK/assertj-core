@@ -32,6 +32,7 @@ import static org.assertj.core.error.ShouldHaveName.shouldHaveName;
 import static org.assertj.core.error.ShouldHaveNoParent.shouldHaveNoParent;
 import static org.assertj.core.error.ShouldHaveParent.shouldHaveParent;
 import static org.assertj.core.error.ShouldHaveSameContent.shouldHaveSameContent;
+import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.core.error.ShouldNotContain.directoryShouldNotContain;
 import static org.assertj.core.error.ShouldNotExist.shouldNotExist;
@@ -156,6 +157,12 @@ public class Files {
       String msg = String.format("Unable to verify binary contents of file:<%s>", actual);
       throw new UncheckedIOException(msg, e);
     }
+  }
+
+  public void assertHasSize(AssertionInfo info, File actual, long expected) {
+    assertIsFile(info, actual);
+    if (expected == actual.length()) return;
+    throw failures.failure(info, shouldHaveSize(actual, expected));
   }
 
   /**

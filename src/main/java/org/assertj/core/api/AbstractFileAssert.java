@@ -339,6 +339,33 @@ public abstract class AbstractFileAssert<SELF extends AbstractFileAssert<SELF>> 
   }
 
   /**
+   * Verifies that the size of the actual {@code File} is <b>exactly</b> equal to the given size in bytes.
+   * <p>
+   * Example:
+   * <pre><code class='java'> File bin = File.createTempFile(&quot;tmp&quot;, &quot;bin&quot;);
+   * Files.write(bin.toPath(), new byte[] {1, 1});
+   *
+   * // assertion will pass
+   * assertThat(bin).hasSize(2);
+   *
+   * // assertions will fail
+   * assertThat(bin).hasBinaryContent(0);
+   * assertThat(bin).hasBinaryContent(1);</code></pre>
+   *
+   * @param expected the expected binary content to compare the actual {@code File}'s content to.
+   * @return {@code this} assertion object.
+   * @throws NullPointerException if the given content is {@code null}.
+   * @throws AssertionError if the actual {@code File} is {@code null}.
+   * @throws AssertionError if the actual {@code File} is not an existing file.
+   * @throws UncheckedIOException if an I/O error occurs.
+   * @throws AssertionError if the content of the actual {@code File} is not equal to the given binary content.
+   */
+  public SELF hasSize(long expected) {
+    files.assertHasSize(info, actual, expected);
+    return myself;
+  }
+
+  /**
    * Specifies the name of the charset to use for text-based assertions on the file's contents.
    *
    * @param charsetName the name of the charset to use.
